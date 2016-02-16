@@ -99,21 +99,164 @@ Yup. It's Markdown with some major additions. The compiler used is [Marked](http
 which is incredibly fast, and yet well featured, supporting 'Github Flavored Markdown', which
 is what people use to write documentation on Github.
 
+Markdown is about making things format well, but not control how it appears.
+Technically, it doesn't care if \*this text\* becomes *this text* or
+<strong style="font-weight:normal;text-decoration:underline;font-style:italic;">this text</strong>.
+But people who want to just create something do. So these features have been added.
+
 <div style="text-align:center">
-    <input onclick="changePage('See the Magic')" type="button" value="See the magic!">
+    <input onclick="changePage('Features')" type="button" value="Features..?">
 </div>
 
+## Features
+
+#### Menus + DHM (Document Header Model)
+
+{header(5)Example}
+
+{color(red)Make sure to *click the links* in the menu below!}
+
+> <iframe src="eg.html"></iframe>
+
+<style>iframe {width:100%;height:260px;border:0;overflow:visible}</style>
+
+...is made with this...
+
+```none
+{menu()Header 1,Header 2,Header 3}
+
+### Header 1
+
+Paragraph for *Header 1*.
+
+### Header 2
+
+#### Sub-header for Header 2
+
+Paragraph for Sub-header.
+
+### Header 3
+
+Lorem ipsum dolor Header 3.
+```
+
+<div style="text-align:center"><input class="gray" type="button" value="Explanation" onclick="document.getElementById('showme').style.display='block';this.style.display='none'"></div>
+
+<div style="display:none" id="showme">
+
+Headers are taken seriously in *some-js*.
+
+Each header is considered to contain its subheaders and subcontent.
+This means that menus can be used to open and close this subcontent.
+
+<pre>
+<code class="no-highlight"># A               |             A
+<span class="hv"></span>                <span class="ps">  </span>|         ,---'---,----,
+<span class="pl"></span>## B            <span class="ps">  </span>|         B       H    J
+<span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|      ,--'-,     |    |
+<span class="hv"></span><span class="pl"></span>### C         <span class="ps">  </span><span class="ps">  </span>|      C    E     I    K
+<span class="hv"></span><span class="hv"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|      |    |          |
+<span class="hv"></span><span class="hv"></span><span class="pl"></span>D.          <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|      D    F          L
+<span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|           |
+<span class="hv"></span><span class="pl"></span>### E         <span class="ps">  </span><span class="ps">  </span>|           G
+<span class="hv"></span><span class="sp"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|
+<span class="hv"></span><span class="sp"></span><span class="pl"></span>#### F      <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|  By default, all of these are visible
+<span class="hv"></span><span class="sp"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|  from A at the top to L at the bottom.
+<span class="hv"></span><span class="sp"></span><span class="pl"></span>G.          <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|
+<span class="hv"></span>                <span class="ps">  </span>|  If header 'E' is "opened" then any
+<span class="pl"></span>## H            <span class="ps">  </span>|  siblings ('C') and their descendants ('D')
+<span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|  would be hidden and displayed as before.
+<span class="hv"></span><span class="pl"></span>I.            <span class="ps">  </span><span class="ps">  </span>|
+<span class="hv"></span>                <span class="ps">  </span>|  (It makes much more sense in context of the
+<span class="pl"></span>## J            <span class="ps">  </span>|   example, including a menu, below.)
+<span class="sp"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|
+<span class="sp"></span><span class="pl"></span>### K.        <span class="ps">  </span><span class="ps">  </span>|
+<span class="sp"></span><span class="sp"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|
+<span class="sp"></span><span class="sp"></span><span class="pl"></span>L.          <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|
+</code></pre>
+
+<div style="text-align:center"><input class="gray" id="ch" type="button" value="I still don't get it" onclick="toggleHV();"></div>
+</div>
+
+
+{header(4)Coloring text}
+
+Markdown doesn't support colors. `{color(red)this is red}` is the syntax.
+
+```none
+#### {color(#0000ff)This is a big blue header}
+
+##### {color(green)This is a green header}
+```
+
+> {header(4){color(#0000ff)This is a big blue header}
+>
+> {header(5){color(green)This is a green header}
+
+<div style="text-align:center"><input class="gray" type="button" value="Explanation" onclick="document.getElementById('more-on-colors').style.display='block';this.style.display='none'"></div>
+
+###### More on Colors
+
+You can use these as colours:
+
+- some color names
+- RGB values: `rgb(255,255,255)`
+- RGB values //with transparency// [0 to 1]: `rgba(255,255,255,0.5)`
+- Hex codes (both #rgb and #rrggbb formats): `#ccc`
+
+###### <span></span>
+
+<div style="text-align:center">
+    <input onclick="changePage('let-me-try-it')" type="button" value="Let me try it!">
+</div>
+
+## Let me try it
+s
+
 <style>
+    .hv, .pl, .sp, .ps { font-weight:bold;color:blue }
+    .section {padding-top:0 !important}
     h1 {text-align:center;padding-top:2rem;}
     h2 {background-color:black;color:white;text-align:center;padding-bottom:0.5rem; }
+    h6 {text-decoration:underline;padding-top:.5rem;}
+    .header-1, .header-2, .header-3 {}
     .hljs-emphasis { font-style: normal !important; font-weight: bold !important; }
     .parent { position:relative }
     .parent .left, .parent .right { width:50% }
     .parent .right { position:absolute;left:50%;top:0 }
     img[alt="Dwarfs"] { max-height:100% !important }
+    #more-on-colors { display:none }
+    .gray {
+        background-color: #ccc !important;
+        padding: 0 10px !important;
+        line-height: 25px !important;
+        height: 25px !important;
+     }
 </style>
 
 <script>
+    window.hvstatus = false;
+    var hvs = document.getElementsByClassName('hv');
+    var pls = document.getElementsByClassName('pl');
+    var sps = document.getElementsByClassName('sp');
+    var pss = document.getElementsByClassName('ps');
+    var butt = document.getElementById('ch');
+    function toggleHV() {
+        if (window.hvstatus) {
+            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "";
+            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "";
+            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "";
+            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "  ";
+            butt.setAttribute("value", "Show them again");
+        } else {
+            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "| ";
+            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "+ ";
+            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "  ";
+            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "";
+            butt.setAttribute("value", "Hide it again");
+        }
+        window.hvstatus = !window.hvstatus;
+    }
     changePage('Intro');
     loadSources([[1,'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github.min.css']]);
 </script>
