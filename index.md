@@ -4,6 +4,53 @@
 
 {vspace(-3rem)}
 
+<style>
+    .hv, .pl, .sp, .ps { font-weight:bold;color:blue }
+    .section {padding-top:0 !important}
+    h1 {text-align:center;padding-top:2rem;}
+    h2 {background-color:black;color:white;text-align:center;padding-bottom:0.5rem; }
+    h6 {text-decoration:underline;padding-top:.5rem;}
+    .header-1, .header-2, .header-3 {}
+    .hljs-emphasis { font-style: normal !important; font-weight: bold !important; }
+    .parent { position:relative }
+    .parent .left, .parent .right { width:50% }
+    .parent .right { position:absolute;left:50%;top:0 }
+    img[alt="Dwarfs"] { max-height:100% !important }
+    #more-on-colors { display:none }
+    .gray {
+        background-color: #ccc !important;
+        padding: 0 10px !important;
+        line-height: 25px !important;
+        height: 25px !important;
+     }
+</style>
+
+<script type="text/javascript">
+    window.hvstatus = false;
+    var hvs = document.getElementsByClassName('hv');
+    var pls = document.getElementsByClassName('pl');
+    var sps = document.getElementsByClassName('sp');
+    var pss = document.getElementsByClassName('ps');
+    var butt = document.getElementById('ch');
+    function toggleHV() {
+        if (window.hvstatus) {
+            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "";
+            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "";
+            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "";
+            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "  ";
+            butt.setAttribute("value", "Show them again");
+        } else {
+            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "| ";
+            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "+ ";
+            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "  ";
+            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "";
+            butt.setAttribute("value", "Hide it again");
+        }
+        window.hvstatus = !window.hvstatus;
+    }
+    changePage('Intro');
+</script>
+
 ## Intro
 
 #### *some-js* has always set out to do three things well.
@@ -151,9 +198,9 @@ This means that menus can be used to open and close this subcontent.
 
 <pre>
 <code class="no-highlight"># A               |             A
-<span class="hv"></span>                <span class="ps">  </span>|         ,---'---,----,
+<span class="hv"></span>                <span class="ps">  </span>|          \_\_\_<span style="position:relative;bottom:2px;">|</span>\_\_\_\_\_\_\_\_
 <span class="pl"></span>## B            <span class="ps">  </span>|         B       H    J
-<span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|      ,--'-,     |    |
+<span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|       \_\_<span style="position:relative;bottom:2px;">|</span>\_      |    |
 <span class="hv"></span><span class="pl"></span>### C         <span class="ps">  </span><span class="ps">  </span>|      C    E     I    K
 <span class="hv"></span><span class="hv"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|      |    |          |
 <span class="hv"></span><span class="hv"></span><span class="pl"></span>D.          <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|      D    F          L
@@ -167,8 +214,8 @@ This means that menus can be used to open and close this subcontent.
 <span class="pl"></span>## H            <span class="ps">  </span>|  siblings ('C') and their descendants ('D')
 <span class="hv"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|  would be hidden and displayed as before.
 <span class="hv"></span><span class="pl"></span>I.            <span class="ps">  </span><span class="ps">  </span>|
-<span class="hv"></span>                <span class="ps">  </span>|  (It makes much more sense in context of the
-<span class="pl"></span>## J            <span class="ps">  </span>|   example, including a menu, below.)
+<span class="hv"></span>                <span class="ps">  </span>|
+<span class="pl"></span>## J            <span class="ps">  </span>|
 <span class="sp"></span><span class="hv"></span>              <span class="ps">  </span><span class="ps">  </span>|
 <span class="sp"></span><span class="pl"></span>### K.        <span class="ps">  </span><span class="ps">  </span>|
 <span class="sp"></span><span class="sp"></span><span class="hv"></span>            <span class="ps">  </span><span class="ps">  </span><span class="ps">  </span>|
@@ -189,9 +236,9 @@ Markdown doesn't support colors. `{color(red)this is red}` is the syntax.
 ##### {color(green)This is a green header}
 ```
 
-> {header(4){color(#0000ff)This is a big blue header}
+> {header(4){color(#0000ff)This is a big blue header
 >
-> {header(5){color(green)This is a green header}
+> {header(5){color(green)This is a green header
 
 <div style="text-align:center"><input class="gray" type="button" value="Explanation" onclick="document.getElementById('more-on-colors').style.display='block';this.style.display='none'"></div>
 
@@ -207,56 +254,5 @@ You can use these as colours:
 ###### <span></span>
 
 <div style="text-align:center">
-    <input onclick="changePage('let-me-try-it')" type="button" value="Let me try it!">
+    <a href="editor.html"><input type="button" value="Let me try it!"></a>
 </div>
-
-## Let me try it
-s
-
-<style>
-    .hv, .pl, .sp, .ps { font-weight:bold;color:blue }
-    .section {padding-top:0 !important}
-    h1 {text-align:center;padding-top:2rem;}
-    h2 {background-color:black;color:white;text-align:center;padding-bottom:0.5rem; }
-    h6 {text-decoration:underline;padding-top:.5rem;}
-    .header-1, .header-2, .header-3 {}
-    .hljs-emphasis { font-style: normal !important; font-weight: bold !important; }
-    .parent { position:relative }
-    .parent .left, .parent .right { width:50% }
-    .parent .right { position:absolute;left:50%;top:0 }
-    img[alt="Dwarfs"] { max-height:100% !important }
-    #more-on-colors { display:none }
-    .gray {
-        background-color: #ccc !important;
-        padding: 0 10px !important;
-        line-height: 25px !important;
-        height: 25px !important;
-     }
-</style>
-
-<script>
-    window.hvstatus = false;
-    var hvs = document.getElementsByClassName('hv');
-    var pls = document.getElementsByClassName('pl');
-    var sps = document.getElementsByClassName('sp');
-    var pss = document.getElementsByClassName('ps');
-    var butt = document.getElementById('ch');
-    function toggleHV() {
-        if (window.hvstatus) {
-            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "";
-            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "";
-            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "";
-            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "  ";
-            butt.setAttribute("value", "Show them again");
-        } else {
-            for (var i=0; i<hvs.length; i++) hvs[i].innerHTML = "| ";
-            for (var i=0; i<pls.length; i++) pls[i].innerHTML = "+ ";
-            for (var i=0; i<sps.length; i++) sps[i].innerHTML = "  ";
-            for (var i=0; i<pss.length; i++) pss[i].innerHTML = "";
-            butt.setAttribute("value", "Hide it again");
-        }
-        window.hvstatus = !window.hvstatus;
-    }
-    changePage('Intro');
-    loadSources([[1,'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/github.min.css']]);
-</script>
