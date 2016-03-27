@@ -66,32 +66,49 @@
         color: white;
         border-radius: .3rem;
         width: 115%;
+        min-height: 240px;
         font-family: Inconsolata, monospace;
-        white-space: pre;
+        white-space: pre-wrap;
         position: relative;
     }
-    #_sjs_next {
+    #_sjs_next, #_sjs_prev {
+        bottom: 6px;
+        font-family: Raleway, sans-serif;
         position: absolute;
-        bottom: 5px;
-        right: 5px;
-        padding: 5px 20px;
-        background-color: green;
+        padding: 2px 6px 0;
         border-radius: 0.3rem;
         border: 1px solid transparent;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        background-color: #404040;
+    }
+    #_sjs_next {
+        right: 5px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+    }
+    #_sjs_prev {
+        right: 64px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
     }
     #_sjs_next.active {
-        -webkit-animation: glow 1.0s infinite alternate;
+        -webkit-animation: glowgreen 1.0s infinite alternate;
         -webkit-transition: border 1.0s linear, box-shadow 1.0s linear;
         -moz-transition: border 1.0s linear, box-shadow 1.0s linear;
         transition: border 1.0s linear, box-shadow 1.0s linear;
+        color: #69c800;
+        background-color: green;
     }
-    #_sjs_next:hover {
+    #_sjs_next:hover, #_sjs_prev:hover {
         cursor: pointer;
     }
     .CodeMirror, .CodeMirror-gutters {
         height: 100% !important;
     }
-    @-webkit-keyframes glow {
+    @-webkit-keyframes glowgreen {
         to {
              border-color: #69c800;
         -webkit-box-shadow: 0 0 10px #69c800;
@@ -99,6 +116,31 @@
                 box-shadow: 0 0 10px #69c800;
         }
     }
+    #_sjs_alrt_content {
+        width: 100%;
+        height: 100%;
+        padding: 5%;
+        box-sizing: border-box;
+    }
+    #_sjs_alrt {
+        overflow: hidden;
+        transition: opacity 1s ease-out;
+        -webkit-transition: opacity 1s ease-out;
+        -moz-transition: opacity 1s ease-out;
+        -o-transition: opacity 1s ease-out;
+        opacity: 0;
+        background-color: green;
+        position: absolute;
+        left: 0;
+        top: 60%;
+        height: 40%;
+        color: white;
+        z-index: 9999;
+        width: 100%;
+    }
+    #_sjs_alrt.hide { display: none }
+    #_sjs_alrt h3 { margin-bottom: 0; }
+    #_sjs_nextone:hover { cursor: pointer; }
 </style>
 
 <div id="_sjs_ohhai2" onclick="expandSheet2();">
@@ -109,25 +151,36 @@
     <div id="_sjs_ohbai">Markdown Cheatsheet</div>
     <div id="_sjs_cheat-sheet"></div>
 </div>
-<div id="_sjs_help">*The Paw:* Hey! We're the local student newspaper! We'd like you to make us a website. We heard about a fantastic (shameless self promo, sorry) new tool called //some-js//, maybe you should check it out?
-*You:* Do I have a choice?
-*Paw:* Nope. (_ethical consent disclaimer:_ you do, you can leave at any time :D)
-*You:* Err...
-*Paw:* Thanks.
-*You:* Do I get paid for this?
-*Paw:* Thanks, it helps a lot.
-*You:* ...<div id="_sjs_next" onclick="check()">_continue..._</div></div>
-<div style="padding-right: 1.2rem;"><input id="_sjs_width" type="range" value="30" style="width:120%;margin:10px -10%; 0"></div>
+<div id="_sjs_help"><strong>The Paw:</strong> Hey! We're the local student newspaper! We'd like you to make us a website. We heard about a fantastic (shameless self promo) new tool called <em>some-js</em>, maybe you should check it out?
+<strong>You:</strong> Do I have a choice?
+<strong>Paw:</strong> Nope. (<span class="underline">ethical consent disclaimer:</span> you do, you can leave at any time :D)
+<strong>You:</strong> Err...
+<strong>Paw:</strong> Thanks.
+<strong>You:</strong> Do I get paid for this?
+<strong>Paw:</strong> Thanks, it helps a lot.
+<strong>You:</strong> ...<div id="_sjs_next" style="border-radius:0.3rem" onclick="nextOne()" class="active">CONTINUE</div></div>
+<div style="padding-right: 1.2rem;"><input id="_sjs_width" type="range" value="40" style="width:120%;margin:10px -10%; 0"></div>
 <div id="_sjs_hello" style="position:relative;margin-left:-10%;margin-right:-10%;">
     <div id="_sjs_edit"></div>
     <div id="_sjs_out">
         <div id="_sjs_outp" class="container"></div>
     </div>
+    <div id="_sjs_alrt" class="hide">
+        <div id="_sjs_alrt_content">
+            <h3 style="font-weight:bold;">Well done! That's right.</h3>
+            <h4 id="_sjs_nextone" onclick="nextOne()">Click '<u>continue...</u>' <i style="transform: rotate(315deg)" class="fa fa-arrow-circle-right"></i></h4>
+            <div style="position:absolute;top:20%;right:8%;">
+                <a style="color:rgba(255,255,255,.4);" onclick="hideOverlay()">HIDE</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+    var cm;
+
     window.defer(function(){
-        var cm = CodeMirror(document.getElementById('_sjs_edit'), {
+        cm = CodeMirror(document.getElementById('_sjs_edit'), {
           lineWrapping: true,
           lineNumbers: true
         });
@@ -140,13 +193,15 @@
             }
         };
 
-        cm.setValue("# Hello\nworld.");
+        cm.setValue("{"+"-- Enter code below --}\n\n### Hello\n\nworld!");
+
         updateView();
 
         function updateView() {
             document.getElementById("_sjs_outp").innerHTML = generate(cm.getValue());
             contextualise();
-            check();
+            $('body').css('opacity', '').css('overflow', '');
+            defer(check, "typeof window.tasks !== 'undefined'");
         }
 
         cm.on("change", updateView);
@@ -184,23 +239,67 @@
     }
     $('#_sjs_width').on("click", adjWidth);
     $('#_sjs_width').on("change", adjWidth);
-    adjWidth({target: {value: 30}});
+    adjWidth({target: {value: 40}});
 
-    window.currentTask = 0;
-
-    window.tasks = [{"task":"<strong>The Paw:</strong> Hey! We're the local student newspaper! We'd like you to make us a website. We heard about a fantastic (shameless self promo, sorry) new tool called <em>some-js</em>, maybe you should check it out?\n<strong>You:</strong> Do I have a choice?\n<strong>Paw:</strong> Nope. (<span class=\"underline\">ethical consent disclaimer:</span> you do, you can leave at any time :D)\n<strong>You:</strong> Err...\n<strong>Paw:</strong> Thanks.\n<strong>You:</strong> Do I get paid for this?\n<strong>Paw:</strong> Thanks, it helps a lot.\n<strong>You:</strong> ...<div id=\"_sjs_next\" onclick=\"check()\" class=\"active\"><span class=\"underline\">continue...</span></div>","regex":""}];
+    var hidden = false;
+    window.currentTask = -1;
+    window.maxTask = -1;
+    window.tasks = [{"task":"<strong>some-help:</strong> Let's start with making a small article for The Paw. \n\n<span style=\"color: #999\">Note: You can resize the window below by <b>dragging the bottom-right corner</b> down. You can also change the width of the textbox by using the <b>slider above the editor</b>.</span>\n\n<u>First, we'll need a simple header and paragraph.</u>\nYou can create headers with 1 to 6 '#' characters, a space and then the appropriate text.\n\nTry making a header for the article that reads: \n<em>'The Paw treats its coders like dogs'</em>.","regex":"#{1,6}\\s+[tT]he [pP]aw treats it'?s coders like dogs","replace":""},{"task":"<strong>some-help:</strong>\n<u>Right, now let's put your name on it.</u>\n\nMake another smaller header that says: \n<em>'By [your name here].'</em>.\n\nRemember, you can make a smaller header by adding more '#'s before the text.\n\n(Don't forget to include the '.')","regex":"#{2,6}\\s+[bB]y [A-Za-z-' ]*?\\.\\s*?(\\n|$)","replace":""},{"task":"<strong>some-help:</strong>\n<u>Let's make the article title bold.</u>\n\nYou can make something bold by enclosing it within '*' characters. \n<em>'*This is bold text*'</em>.","regex":"\\*\\s*[tT]he [pP]aw treats it'?s coders like dogs\\s*\\*","replace":""},{"task":"<strong>some-help:</strong>\n<u>Nice one. Now, let's make your name appear in italics.</u>\n\nYou can make something italic by enclosing it between '//'s. \n<em>'//This is italic text//'</em>.","regex":"\\/\\/\\s*([bB]y )?[A-Za-z-' ]*?\\.?\\s*\\/\\/","replace":""},{"task":"<strong>some-help:</strong>\n<u>Now, let's actually write the article.</u>\n\nI've started it for you. As you can see, a blank line between two bodies of text will separate them into paragraphs.\n\nBut it seems that the address doesn't display on separate lines, as it thinks it's all part of one paragraph.\n\n<u>Separate the lines of the 'Dogentry College' address by turning\nthem into separate paragraphs.</u>","regex":"The Paw.*?\\n.*?\\n.*?Dogentry Student Union.*?\\n.*?\\n.*?Kennelworth.*?\\n.*?\\n.*?(\\n.*?)?D","replace":"# *The Paw treats its coders like dogs*\n\n## By //[Replace Me]//.\n\nThe Paw, as you well know, is a newspaper at\nthe prestigious university *Dogentry College*.\n\nUnfortunately the student newspaper is run by\na scary lady who _destroys all_ in her path,\n//especially coders//, as she forces them to\nwork non-stop, not to mention eat dogfood\n(which is surprisingly nutritious).\n\nPlease leave them complaints:\n\n*By post:*  \n\nThe Paw\nDogentry Student Union\nKennelworth\nDO8 8ED\n\n*By telephone:* 07700 WOOFED\n\n*By email:* thepaw@dogentry.ac.uk"},{"task":"<strong>some-help:</strong>\n\nBut this looks a bit weird now. Each line is far from the next.\n\nFortunately there's a nice way around this, called line-breaks.\n\nYou can make a line fold down below by adding two spaces at the end of the line:\n<em><span style=\"background-color:#666\">This is above,  \nthis is below.</span></em>\n\n<u>Change the address to now use line-breaks instead of paragraphs.</u>","regex":"The Paw  +\\nDogentry Student Union  +\\nKennelworth  +\\n","replace":""},{"task":"<strong>some-help:</strong>\n<u>Underlines next.</u>\n\nUnderlines are achieved by putting underscores (_) around the text.\n\n<em>'_This is underlined_'</em>.\n\nUnderlines in some-js are more than meet the eye. For instance, <em>'js'</em> in <em>'some_js_tutorial'</em> will not become underlined; and rightly so, it's my username!\n\n<span style=\"color: #999\">i.e. It will only match with spaces/punctuation on either side.</span>","regex":"","replace":""}];
 
     function check() {
-        if (cm.getValue().match(new RegExp(window.tasks[window.currentTask])).length>0) {
+        if (window.currentTask > -1 && !hidden && cm.getValue().match(new RegExp(window.tasks[window.currentTask].regex), 'ig')) {
             $('#_sjs_next').attr('class','active');
-            window.currentTask += 1;
+            $('#_sjs_alrt').removeClass('hide');
+            setTimeout(function() {
+                $('#_sjs_alrt').css('opacity','0.96');
+            }, 20);
         }
+        $('#_sjs_next').css('display', '');
+        $('#_sjs_prev').css('display', '');
+    }
+
+    function hideOverlay() {
+        $('#_sjs_alrt').css('opacity','0');
+        hidden = true;
+        setTimeout(function() {
+            $('#_sjs_alrt').addClass('hide');
+        }, 1000);
     }
 
     function nextOne() {
-        if (cm.getValue().match(new RegExp(window.tasks[window.currentTask])).length>0) {
-            $('#_sjs_next').attr('class','active');
-            window.currentTask += 1;
+        if (window.currentTask != window.tasks.length-1) window.currentTask++;
+        if (window.maxTask < window.currentTask-1) {
+            window.maxTask = window.currentTask-1;
+            if (window.tasks[window.currentTask].replace) {
+                var rep = window.tasks[window.currentTask].replace;
+                if (window.currentTask == 4) {
+                    rep = rep.replace("[Replace Me]", cm.getValue().match(/(\/\/)?[B]y(\/\/)? (\/\/)?[A-Za-z-' ]*(?=[\/\.])/)[0].substring(5).trim());
+                }
+                cm.setValue(rep);
+            }
+        }
+        hidden = false;
+        changeOne();
+        if (window.maxTask < window.currentTask) {
+            $('#_sjs_next').css('display', 'none');
+            $('#_sjs_prev').css('display', 'none');
         }
     }
+
+    function prevOne() {
+        if (window.currentTask) window.currentTask--;
+        hidden = true;
+        changeOne();
+    }
+
+    function changeOne() {
+        var prev_button = "<div id=\"_sjs_prev\" onclick=\"prevOne()\"><i class=\"fa fa-arrow-left\"></i></div>";
+        if (window.currentTask == 0) prev_button = "<style>#_sjs_next{border-radius:.3rem}</style>";
+        $('#_sjs_help').html(window.tasks[window.currentTask].task + prev_button + "<div id=\"_sjs_next\" onclick=\"nextOne()\">NEXT <i class=\"fa fa-arrow-right\"></i></div>");
+        $('#_sjs_alrt').css('opacity','0');
+        setTimeout(function() {
+            $('#_sjs_alrt').addClass('hide');
+        }, 1000);
+    }
 </script>
+
