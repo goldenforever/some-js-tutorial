@@ -1,4 +1,4 @@
-# <img src="diamond.svg" style="margin:-1rem -0.5rem;position:relative;top:0.6rem;"> some-js {color(blue)tutorial}
+# {emoji()gem}*some-js* {color(gray)tutorial}
 
 - - -
 

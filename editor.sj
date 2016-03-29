@@ -1,4 +1,4 @@
-## {hspace(-10%)}Editor{modify(color,gray)}
+## {hspace(-10%)}{emoji()gem}*some-js* editor{modify(color,gray)}
 
 <style>
     #_sjs_out, #_sjs_edit {
